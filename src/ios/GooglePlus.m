@@ -26,7 +26,7 @@
 
     if ([possibleReversedClientId isEqualToString:self.getreversedClientId] && self.isSigningIn) {
         self.isSigningIn = NO;
-        [GIDSignIn.sharedInstance handleURL:url];
+        [[GIDSignIn sharedInstance] handleURL:url];
     }
 }
 
@@ -64,7 +64,6 @@
         return nil;
     }
 
-    signInConfig = [[GIDConfiguration alloc] initWithClientID:reversedClientId];
     NSString *clientId = [self reverseUrlScheme:reversedClientId];
 
     NSString* scopesString = options[@"scopes"];
@@ -74,7 +73,7 @@
     NSString* hostedDomain = options[@"hostedDomain"];
 
 
-    GIDSignIn *signIn = GIDSignIn.sharedInstance;
+    GIDSignIn *signIn = [GIDSignIn sharedInstance];
     signIn.clientID = clientId;
 
     [signIn setLoginHint:loginHint];
@@ -123,13 +122,13 @@
 }
 
 - (void) logout:(CDVInvokedUrlCommand*)command {
-  [GIDSignIn.sharedInstance signOut];
+  [[GIDSignIn sharedInstance] signOut];
   CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"logged out"];
   [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void) disconnect:(CDVInvokedUrlCommand*)command {
-  [GIDSignIn.sharedInstance disconnect];
+  [[GIDSignIn sharedInstance] disconnect];
   CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"disconnected"];
   [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
